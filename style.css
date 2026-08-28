@@ -1,0 +1,813 @@
+/* ==========================================================================
+   DESIGN SYSTEM - THÈME ROMANTIQUE ROSE & ROSE PÂLE
+   ========================================================================== */
+
+:root {
+    /* Palette Rose & Dégradés Romantiques */
+    --bg-pale-1: #fff5f7;
+    --bg-pale-2: #ffe4e9;
+    --bg-pale-3: #fce7f3;
+    
+    --rose-50: #fff1f2;
+    --rose-100: #ffe4e6;
+    --rose-200: #fecdd3;
+    --rose-300: #fda4af;
+    --rose-400: #fb7185;
+    --rose-500: #f43f5e;
+    --rose-600: #e11d48;
+    --rose-700: #be123c;
+    --rose-800: #9f1239;
+
+    --pink-accent: #ec4899;
+    --pink-glow: rgba(244, 63, 94, 0.25);
+    --pink-subtle-glow: rgba(251, 113, 133, 0.15);
+    
+    /* Couleurs de Texte */
+    --text-primary: #4a1525;
+    --text-secondary: #83273e;
+    --text-muted: #ad5369;
+
+    /* Glassmorphism & Ombres */
+    --glass-bg: rgba(255, 255, 255, 0.78);
+    --glass-border: rgba(255, 255, 255, 0.9);
+    --glass-border-pink: rgba(244, 63, 94, 0.2);
+    --card-shadow: 0 25px 60px -15px rgba(225, 29, 72, 0.2),
+                   0 0 0 1px rgba(255, 255, 255, 0.8) inset,
+                   0 10px 30px rgba(251, 113, 133, 0.12);
+
+    /* Typographie */
+    --font-heading: 'Dancing Script', cursive;
+    --font-title: 'Playfair Display', serif;
+    --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    
+    --transition-smooth: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ==========================================================================
+   RESET & BASE
+   ========================================================================== */
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100vh;
+    font-family: var(--font-body);
+    color: var(--text-primary);
+    background: radial-gradient(circle at 10% 20%, var(--bg-pale-1) 0%, var(--bg-pale-2) 50%, var(--bg-pale-3) 100%);
+    overflow-x: hidden;
+    position: relative;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem 1rem;
+}
+
+/* ==========================================================================
+   ARRIÈRE-PLAN ANIMÉ & ORBES LUMINEUSES
+   ========================================================================== */
+
+.background-decorations {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+#hearts-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.glowing-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.6;
+    animation: orbFloat 18s ease-in-out infinite alternate;
+}
+
+.orb-1 {
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, #fda4af, #f43f5e);
+    top: -100px;
+    left: -100px;
+    animation-duration: 16s;
+}
+
+.orb-2 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, #fbcfe8, #ec4899);
+    bottom: -120px;
+    right: -100px;
+    animation-duration: 22s;
+    animation-delay: -5s;
+}
+
+.orb-3 {
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, #ffe4e6, #fb7185);
+    top: 40%;
+    left: 60%;
+    animation-duration: 20s;
+    animation-delay: -10s;
+}
+
+@keyframes orbFloat {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(40px, 60px) scale(1.12);
+    }
+    100% {
+        transform: translate(-30px, -40px) scale(0.92);
+    }
+}
+
+/* ==========================================================================
+   LECTEUR MUSICAL FLOTTANT
+   ========================================================================== */
+
+.music-controller {
+    position: fixed;
+    top: 1.25rem;
+    right: 1.25rem;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    padding: 0.5rem 0.9rem;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(225, 29, 72, 0.12);
+    transition: var(--transition-smooth);
+    user-select: none;
+}
+
+.music-controller:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(225, 29, 72, 0.2);
+    background: rgba(255, 255, 255, 0.92);
+}
+
+.music-icon-wrapper {
+    position: relative;
+    color: var(--rose-500);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.music-note-anim {
+    position: absolute;
+    font-size: 0.8rem;
+    top: -12px;
+    right: -8px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.music-controller.playing .music-note-anim {
+    animation: musicNoteFly 2s ease-in-out infinite;
+}
+
+.music-text {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+@keyframes musicNoteFly {
+    0% { transform: translateY(0) scale(0.8); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateY(-15px) translateX(6px) scale(1.2); opacity: 0; }
+}
+
+/* ==========================================================================
+   CONTENEUR PRINCIPAL & CARTES GLASSMORPHISM
+   ========================================================================== */
+
+.main-container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 620px;
+    margin: auto;
+}
+
+.card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px) saturate(180%);
+    border: 1.5px solid var(--glass-border);
+    border-radius: 2rem;
+    padding: 3rem 2.25rem;
+    text-align: center;
+    box-shadow: var(--card-shadow);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: visible;
+}
+
+.card.hidden {
+    display: none;
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+}
+
+/* ==========================================================================
+   BADGE & ILLUSTRATION
+   ========================================================================== */
+
+.badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(253, 164, 175, 0.3);
+    border: 1px solid rgba(244, 63, 94, 0.3);
+    color: var(--rose-600);
+    padding: 0.35rem 1.1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 15px rgba(244, 63, 94, 0.1);
+    animation: badgeShimmer 3s infinite alternate;
+}
+
+.sparkle-icon {
+    font-size: 0.95rem;
+}
+
+.illustration-container {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.heart-pulse-badge {
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(135deg, #ffe4e6 0%, #fecdd3 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(244, 63, 94, 0.25), 0 0 0 8px rgba(255, 241, 242, 0.8);
+    animation: pulseHeart 2.4s ease-in-out infinite;
+    position: relative;
+}
+
+.main-heart {
+    font-size: 3rem;
+    filter: drop-shadow(0 4px 8px rgba(244, 63, 94, 0.3));
+    animation: heartWiggle 4s ease-in-out infinite;
+}
+
+.floating-emojis .f-emoji {
+    position: absolute;
+    font-size: 1.25rem;
+    pointer-events: none;
+    animation: floatParticle 3.5s ease-in-out infinite alternate;
+}
+
+.f-emoji.e1 { top: -8px; right: -8px; animation-delay: 0s; }
+.f-emoji.e2 { bottom: -6px; right: -12px; animation-delay: 0.9s; }
+.f-emoji.e3 { top: 0px; left: -12px; animation-delay: 1.8s; }
+.f-emoji.e4 { bottom: -8px; left: -6px; animation-delay: 2.6s; }
+
+@keyframes pulseHeart {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 10px 30px rgba(244, 63, 94, 0.25), 0 0 0 8px rgba(255, 241, 242, 0.8);
+    }
+    50% {
+        transform: scale(1.06);
+        box-shadow: 0 15px 40px rgba(244, 63, 94, 0.4), 0 0 0 14px rgba(255, 241, 242, 0.5);
+    }
+}
+
+@keyframes heartWiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-6deg); }
+    75% { transform: rotate(6deg); }
+}
+
+@keyframes floatParticle {
+    0% { transform: translateY(0) scale(0.9); }
+    100% { transform: translateY(-8px) scale(1.1); }
+}
+
+/* ==========================================================================
+   TYPOGRAPHIE DU TITRE & SOUS-TITRE
+   ========================================================================== */
+
+.romantic-title {
+    font-family: var(--font-title);
+    font-size: 2.35rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    letter-spacing: -0.5px;
+}
+
+.highlight-text {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--rose-600) 0%, var(--pink-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    padding: 0 0.2rem;
+    filter: drop-shadow(0 2px 10px rgba(244, 63, 94, 0.2));
+}
+
+.romantic-subtitle {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    max-width: 480px;
+    margin: 0 auto 1.5rem;
+    font-weight: 400;
+}
+
+.date-hints {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+}
+
+.hint-item {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(251, 113, 133, 0.25);
+    padding: 0.4rem 0.85rem;
+    border-radius: 50px;
+    box-shadow: 0 2px 8px rgba(244, 63, 94, 0.06);
+}
+
+/* ==========================================================================
+   BULLE DE TAQUINERIE (TEASE BUBBLE)
+   ========================================================================== */
+
+.tease-bubble {
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    background: linear-gradient(135deg, #fff0f5 0%, #ffe4e6 100%);
+    border: 1.5px solid var(--rose-300);
+    color: var(--rose-700);
+    padding: 0.5rem 1.25rem;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 8px 20px rgba(244, 63, 94, 0.15);
+    position: relative;
+}
+
+.tease-bubble.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.tease-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 8px 8px 0;
+    border-style: solid;
+    border-color: var(--rose-300) transparent;
+    display: block;
+    width: 0;
+}
+
+/* ==========================================================================
+   AIRE DE JEU DES BOUTONS (BUTTONS PLAYGROUND)
+   ========================================================================== */
+
+.buttons-playground {
+    position: relative;
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.btn {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 0.95rem 1.85rem;
+    border-radius: 50px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    transition: var(--transition-smooth);
+    border: none;
+    outline: none;
+    user-select: none;
+    touch-action: manipulation;
+}
+
+/* Bouton OUI */
+.btn-yes {
+    background: linear-gradient(135deg, #f43f5e 0%, #ec4899 50%, #db2777 100%);
+    color: #ffffff;
+    box-shadow: 0 10px 25px rgba(244, 63, 94, 0.4), 0 0 0 3px rgba(255, 255, 255, 0.6);
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
+    transform-origin: center center;
+    animation: subtlePulse 2s ease-in-out infinite;
+}
+
+.btn-yes:hover {
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 15px 35px rgba(244, 63, 94, 0.5), 0 0 0 4px rgba(255, 255, 255, 0.8);
+}
+
+.btn-yes:active {
+    transform: translateY(1px) scale(0.98);
+}
+
+.btn-glow {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    animation: lightSweep 3.5s infinite;
+}
+
+@keyframes lightSweep {
+    0% { left: -100%; }
+    40%, 100% { left: 100%; }
+}
+
+@keyframes subtlePulse {
+    0%, 100% { box-shadow: 0 10px 25px rgba(244, 63, 94, 0.35); }
+    50% { box-shadow: 0 14px 35px rgba(244, 63, 94, 0.55), 0 0 20px rgba(236, 72, 153, 0.4); }
+}
+
+/* Bouton NON */
+.btn-no {
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--text-secondary);
+    border: 1.5px solid var(--rose-300);
+    box-shadow: 0 6px 18px rgba(244, 63, 94, 0.12);
+    position: relative;
+    z-index: 9999;
+    transition: left 0.38s cubic-bezier(0.22, 1, 0.36, 1), 
+                top 0.38s cubic-bezier(0.22, 1, 0.36, 1), 
+                transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                background 0.2s, 
+                box-shadow 0.2s;
+    white-space: nowrap;
+    cursor: pointer;
+    will-change: left, top, transform;
+}
+
+.btn-no:hover {
+    background: #ffffff;
+    border-color: var(--rose-400);
+    box-shadow: 0 8px 22px rgba(244, 63, 94, 0.2);
+}
+
+.btn-no.running {
+    position: fixed !important;
+    z-index: 99999 !important;
+    box-shadow: 0 16px 36px rgba(244, 63, 94, 0.32) !important;
+    border-color: var(--rose-400) !important;
+    background: rgba(255, 255, 255, 0.96) !important;
+}
+
+.attempt-counter {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-top: 0.75rem;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.attempt-counter.show {
+    opacity: 1;
+}
+
+/* ==========================================================================
+   VUE 2 : CÉLÉBRATION (POST OUI)
+   ========================================================================== */
+
+.celebration-card {
+    animation: popIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes popIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.85) translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.celebration-icon {
+    font-size: 3.8rem;
+    margin-bottom: 0.5rem;
+    animation: bouncePop 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes bouncePop {
+    0% { transform: translateY(0) scale(1); }
+    100% { transform: translateY(-8px) scale(1.08); }
+}
+
+.celebration-title {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.celebration-quote {
+    font-style: italic;
+    color: var(--rose-700);
+    font-size: 1.05rem;
+    margin-bottom: 1.75rem;
+}
+
+/* BILLET D'INVITATION */
+.ticket-wrapper {
+    margin: 1.5rem 0 2rem;
+}
+
+.ticket-card {
+    background: #ffffff;
+    border-radius: 1.25rem;
+    border: 2px dashed var(--rose-300);
+    display: flex;
+    position: relative;
+    box-shadow: 0 12px 30px rgba(244, 63, 94, 0.12);
+    overflow: hidden;
+    text-align: left;
+}
+
+.ticket-left {
+    flex: 1;
+    padding: 1.5rem;
+}
+
+.ticket-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: var(--rose-100);
+    color: var(--rose-600);
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    margin-bottom: 0.6rem;
+}
+
+.ticket-title {
+    font-family: var(--font-title);
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    margin-bottom: 0.85rem;
+}
+
+.ticket-details {
+    list-style: none;
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.ticket-details li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.ticket-right {
+    width: 110px;
+    background: linear-gradient(135deg, var(--rose-50) 0%, var(--rose-100) 100%);
+    border-left: 2px dashed var(--rose-300);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0.5rem;
+    gap: 0.35rem;
+}
+
+.ticket-heart {
+    font-size: 2rem;
+    animation: heartBeat 1.2s ease-in-out infinite;
+}
+
+.ticket-code {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+}
+
+.ticket-status {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #ffffff;
+    background: var(--rose-500);
+    padding: 0.2rem 0.5rem;
+    border-radius: 50px;
+}
+
+@keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.18); }
+}
+
+/* CHECKLIST */
+.date-checklist {
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(251, 113, 133, 0.2);
+    border-radius: 1.25rem;
+    padding: 1.25rem;
+    margin-bottom: 1.75rem;
+    text-align: left;
+}
+
+.date-checklist h4 {
+    font-size: 0.95rem;
+    color: var(--rose-700);
+    margin-bottom: 0.75rem;
+    text-align: center;
+}
+
+.checklist-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+}
+
+.check-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    cursor: default;
+}
+
+.check-item input[type="checkbox"] {
+    accent-color: var(--rose-500);
+    width: 16px;
+    height: 16px;
+    cursor: default;
+}
+
+/* BOUTONS CELEBRATION */
+.celebration-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.btn-whatsapp {
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: #ffffff;
+    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+    font-size: 1.05rem;
+}
+
+.btn-whatsapp:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(37, 211, 102, 0.4);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.7);
+    color: var(--text-secondary);
+    border: 1px solid var(--rose-200);
+    font-size: 0.95rem;
+    padding: 0.75rem 1.5rem;
+}
+
+.btn-secondary:hover {
+    background: #ffffff;
+    border-color: var(--rose-300);
+}
+
+.final-love-note {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    color: var(--rose-600);
+    margin-top: 1rem;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+
+@media (max-width: 600px) {
+    body {
+        padding: 1rem 0.75rem;
+    }
+
+    .card {
+        padding: 2.25rem 1.25rem;
+        border-radius: 1.5rem;
+    }
+
+    .romantic-title {
+        font-size: 1.85rem;
+    }
+
+    .highlight-text {
+        font-size: 2.4rem;
+    }
+
+    .romantic-subtitle {
+        font-size: 0.95rem;
+    }
+
+    .buttons-playground {
+        flex-direction: column;
+        gap: 1rem;
+        min-height: 120px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 0.85rem 1.4rem;
+        font-size: 1rem;
+    }
+
+    .btn-no.running {
+        width: auto !important;
+    }
+
+    .ticket-card {
+        flex-direction: column;
+    }
+
+    .ticket-right {
+        width: 100%;
+        border-left: none;
+        border-top: 2px dashed var(--rose-300);
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 0.75rem 1rem;
+    }
+
+    .checklist-grid {
+        grid-template-columns: 1fr;
+    }
+}

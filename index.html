@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Une question très spéciale pour toi... 💖</title>
+    <meta name="description" content="Une invitation romantique et magique pour une personne extraordinaire.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Arrière-plan animé & Particules de cœurs -->
+    <div class="background-decorations">
+        <div class="glowing-orb orb-1"></div>
+        <div class="glowing-orb orb-2"></div>
+        <div class="glowing-orb orb-3"></div>
+        <canvas id="hearts-canvas"></canvas>
+    </div>
+
+    <!-- Lecteur de Musique Douce Romantique -->
+    <div class="music-controller" id="music-btn" title="Ambiance musicale romantique">
+        <div class="music-icon-wrapper">
+            <span class="music-note-anim">🎵</span>
+            <svg class="music-svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+            </svg>
+        </div>
+        <span class="music-text" id="music-status">Musique : Off</span>
+    </div>
+
+    <main class="main-container">
+        
+        <!-- ================= VUE 1 : LA PROPOSITION ================= -->
+        <section class="card glass-card" id="proposal-card">
+            <div class="badge-pill">
+                <span class="sparkle-icon">✨</span>
+                <span>Message confidentiel & précieux</span>
+                <span class="sparkle-icon">✨</span>
+            </div>
+
+            <!-- Illustration animée romantique -->
+            <div class="illustration-container">
+                <div class="heart-pulse-badge">
+                    <span class="main-heart">💌</span>
+                    <div class="floating-emojis">
+                        <span class="f-emoji e1">🌸</span>
+                        <span class="f-emoji e2">💖</span>
+                        <span class="f-emoji e3">✨</span>
+                        <span class="f-emoji e4">🌷</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Titre & Message -->
+            <h1 class="romantic-title">
+                Veux-tu être mon <span class="highlight-text">Date</span> ?
+            </h1>
+            
+            <p class="romantic-subtitle">
+                J'aimerais t'emmener passer une soirée magique, rien que nous deux, avec des sourires, de bons petits plats et des souvenirs inoubliables... 🌹
+            </p>
+
+            <div class="date-hints">
+                <span class="hint-item">🕯️ Dîner aux chandelles</span>
+                <span class="hint-item">🍰 Douceurs sucrées</span>
+                <span class="hint-item">✨ Étoiles dans les yeux</span>
+            </div>
+
+            <!-- Bulle de dialogue taquine qui apparaît quand elle essaie le "Non" -->
+            <div class="tease-bubble" id="tease-bubble">
+                <span id="tease-text">Essaie encore ! 😜</span>
+            </div>
+
+            <!-- Boutons d'Action -->
+            <div class="buttons-playground" id="buttons-playground">
+                <button type="button" class="btn btn-yes" id="btn-yes">
+                    <span class="btn-glow"></span>
+                    <span class="btn-icon">💖</span>
+                    <span class="btn-label" id="yes-btn-label">Oui, avec grand plaisir !</span>
+                </button>
+
+                <button type="button" class="btn btn-no" id="btn-no">
+                    <span class="btn-icon">🙈</span>
+                    <span class="btn-label" id="no-btn-label">Non</span>
+                </button>
+            </div>
+
+            <div class="attempt-counter" id="attempt-counter">
+                Tentatives d'esquive : <span id="counter-num">0</span> 🏃‍♂️💨
+            </div>
+        </section>
+
+        <!-- ================= VUE 2 : LA CÉLÉBRATION (Après le OUI) ================= -->
+        <section class="card glass-card celebration-card hidden" id="celebration-card">
+            <div class="celebration-header">
+                <div class="celebration-icon">🥰</div>
+                <h2 class="romantic-title celebration-title">
+                    C'est officiel ! <span class="highlight-text">Youpi !</span> 🎉
+                </h2>
+                <p class="celebration-quote">
+                    « Mon cœur vient de faire des bonds de joie. Tu as illuminé ma journée ! » 💖
+                </p>
+            </div>
+
+            <!-- Billet d'invitation VIP -->
+            <div class="ticket-wrapper">
+                <div class="ticket-card">
+                    <div class="ticket-left">
+                        <div class="ticket-tag">BILLET D'AMOUR VIP</div>
+                        <h3 class="ticket-title">Un Rendez-vous Inoubliable</h3>
+                        <ul class="ticket-details">
+                            <li><span class="t-icon">📅</span> <strong>Quand :</strong> Très bientôt (le moment parfait pour toi)</li>
+                            <li><span class="t-icon">📍</span> <strong>Où :</strong> Dans un endroit magique & romantique</li>
+                            <li><span class="t-icon">👗</span> <strong>Dress code :</strong> Ton plus joli sourire ✨</li>
+                            <li><span class="t-icon">🥂</span> <strong>Au menu :</strong> Rires, délices et papillons dans le ventre</li>
+                        </ul>
+                    </div>
+                    <div class="ticket-right">
+                        <div class="ticket-heart">❤️</div>
+                        <div class="ticket-code">DATE-PASS</div>
+                        <div class="ticket-status">CONFIRMÉ</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checklist du Date Parfait -->
+            <div class="date-checklist">
+                <h4>✨ Ce que je te promets pour ce date :</h4>
+                <div class="checklist-grid">
+                    <label class="check-item">
+                        <input type="checkbox" checked disabled>
+                        <span class="checkmark"></span>
+                        <span>Des rires garantis à 100% 🤭</span>
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" checked disabled>
+                        <span class="checkmark"></span>
+                        <span>Tes plats et desserts préférés 🍨</span>
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" checked disabled>
+                        <span class="checkmark"></span>
+                        <span>Des regards tendres et complices 👀</span>
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" checked disabled>
+                        <span class="checkmark"></span>
+                        <span>Un moment gravé pour toujours 💕</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Boutons d'Action Finaux -->
+            <div class="celebration-actions">
+                <a href="#" id="whatsapp-share" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">
+                    <span class="btn-icon">💬</span>
+                    <span>Lui envoyer le "J'ai dit OUI !"</span>
+                </a>
+                
+                <button type="button" class="btn btn-secondary" id="replay-btn">
+                    <span>Rejouer l'animation ✨</span>
+                </button>
+            </div>
+
+            <p class="final-love-note">
+                Hâte de partager ce moment unique avec toi... Je t'aime fort ! 🌹
+            </p>
+        </section>
+
+    </main>
+
+    <!-- Script JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
